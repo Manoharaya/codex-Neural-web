@@ -582,6 +582,76 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 7.5 About & Team Preview Section */}
+      <section className="w-full bg-surface border-t border-b border-gray-200 py-24 z-10 relative">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="grid lg:grid-cols-3 gap-12 items-center">
+            
+            {/* Rationale column */}
+            <div className="space-y-6">
+              <span className="text-xs font-mono font-bold text-primary tracking-widest uppercase block">Collective</span>
+              <Typography variant="h2">Meet our Leaders</Typography>
+              <Typography variant="body-large" className="text-muted">
+                Codex Neural is a specialized studio based in Kathmandu, Nepal. We combine systems scaling, custom compilers, and refined interfaces.
+              </Typography>
+              <div className="pt-4">
+                <Button href="/team" variant="secondary">
+                  View Full Roster &rarr;
+                </Button>
+              </div>
+            </div>
+
+            {/* CEO & CTO cards column */}
+            <div className="lg:col-span-2 grid sm:grid-cols-2 gap-8">
+              {/* CEO Card */}
+              <div className="p-8 bg-background border border-gray-200 rounded-2xl shadow-sm hover:shadow-premium transition-all duration-300 flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-full bg-tint text-primary font-heading font-black text-base flex items-center justify-center border border-primary/10 select-none mb-6">
+                    MS
+                  </div>
+                  <h3 className="text-lg font-bold font-heading text-foreground mb-1">Manohar Singh</h3>
+                  <p className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-4">Founder & CEO</p>
+                  <p className="text-xs text-muted leading-relaxed mb-6 font-sans">
+                    Leading strategic vision and operational excellence. Orchestrating business development, client relations, and day-to-day operations.
+                  </p>
+                </div>
+                <div className="flex gap-4 pt-4 border-t border-gray-100 font-mono text-[10px]">
+                  <a href="https://www.linkedin.com/in/manohar-cn" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-primary transition-colors font-bold uppercase tracking-wider">
+                    LinkedIn
+                  </a>
+                  <a href="https://github.com/Manoharaya" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-primary transition-colors font-bold uppercase tracking-wider">
+                    GitHub
+                  </a>
+                </div>
+              </div>
+
+              {/* CTO Card */}
+              <div className="p-8 bg-background border border-gray-200 rounded-2xl shadow-sm hover:shadow-premium transition-all duration-300 flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-full bg-tint text-primary font-heading font-black text-base flex items-center justify-center border border-primary/10 select-none mb-6">
+                    AP
+                  </div>
+                  <h3 className="text-lg font-bold font-heading text-foreground mb-1">Anuj Pokhrel</h3>
+                  <p className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-4">CTO & Backend Developer</p>
+                  <p className="text-xs text-muted leading-relaxed mb-6 font-sans">
+                    Architecting scalable backend systems and leading technical strategy. Building robust server infrastructure with focus on security and reliability.
+                  </p>
+                </div>
+                <div className="flex gap-4 pt-4 border-t border-gray-100 font-mono text-[10px]">
+                  <a href="https://www.linkedin.com/in/anujpokharel2468" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-primary transition-colors font-bold uppercase tracking-wider">
+                    LinkedIn
+                  </a>
+                  <a href="https://github.com/Anuj12Pokharel" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-primary transition-colors font-bold uppercase tracking-wider">
+                    GitHub
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* 8. Testimonials Section */}
       <section className="w-full bg-surface border-t border-b border-gray-200 py-24 z-10 relative">
         <div className="max-w-7xl mx-auto px-6 md:px-12">

@@ -173,11 +173,15 @@ export default function Footer() {
           <div className="pt-2 text-xs text-muted font-mono leading-relaxed space-y-1">
             <p>📍 Maitidevi, Kathmandu, Nepal</p>
             <p>📧 contact@codexneural.com</p>
-            <p>
+            <div className="flex gap-2 pt-1">
               <Link href="/privacy" className="text-[10px] underline hover:text-primary transition-colors">
                 Privacy Policy
               </Link>
-            </p>
+              <span className="text-[10px] text-muted select-none">|</span>
+              <Link href="/terms" className="text-[10px] underline hover:text-primary transition-colors">
+                Terms of Service
+              </Link>
+            </div>
           </div>
         </div>
 

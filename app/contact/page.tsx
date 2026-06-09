@@ -1,45 +1,76 @@
 "use client";
 
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 
-import { useState } from "react";
+interface ScopingFormData {
+  name: string;
+  email: string;
+  company: string;
+  budget: string;
+  brief: string;
+  referral: string;
+}
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    budget: "$10k - $25k",
-    brief: "",
-    referral: "Google Search"
-  });
   const [submitted, setSubmitted] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    // Clear form
-    setFormData({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm<ScopingFormData>({
+    defaultValues: {
       name: "",
       email: "",
       company: "",
       budget: "$10k - $25k",
       brief: "",
       referral: "Google Search"
-    });
-    setTimeout(() => setSubmitted(false), 5000);
+    }
+  });
+
+  const onSubmit = async (data: ScopingFormData) => {
+    setIsSubmitting(true);
+    setApiError(null);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+
+      if (res.ok && result.success) {
+        setSubmitted(true);
+        reset();
+      } else {
+        setApiError(result.error || "Failed to submit scoping request.");
+      }
+    } catch (err) {
+      setApiError("Network error. Please try again.");
+      console.error("Scoping submit error", err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col justify-between relative overflow-hidden font-sans">
+    <main className="min-h-screen bg-background text-foreground flex flex-col justify-between relative overflow-hidden font-sans z-10">
+      
       {/* Background patterns */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-tint/20 rounded-full blur-[100px] -z-10 animate-pulse-glow" />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(15,118,110,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(15,118,110,0.01)_1px,transparent_1px)] bg-[size:50px_50px] -z-10" />
 
       {/* Main Content */}
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 flex-grow w-full z-10 grid lg:grid-cols-12 gap-12 items-start">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-24 flex-grow w-full grid lg:grid-cols-12 gap-12 items-start">
         
         {/* Left Column: Form Scoping */}
         <div className="lg:col-span-7 bg-surface border border-gray-200 rounded-xl p-8 shadow-sm">
@@ -49,31 +80,51 @@ export default function Contact() {
           {submitted ? (
             <div className="p-6 bg-tint/25 border border-primary/20 text-primary rounded-xl text-sm font-semibold text-center font-sans">
               🎉 Thank you! Your scoping inquiry has been received. Our engineering leads will review your request and reply via email within 24 hours.
+              <button 
+                onClick={() => setSubmitted(false)}
+                className="block text-xs text-primary underline mx-auto mt-4 font-mono font-bold uppercase tracking-wide"
+              >
+                Submit another request
+              </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6 font-sans">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 font-sans">
+              {apiError && (
+                <div className="p-4 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-lg">
+                  ⚠️ {apiError}
+                </div>
+              )}
+
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-mono font-bold text-muted uppercase tracking-wider mb-2">Name</label>
                   <input
                     type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 bg-background border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground"
+                    {...register("name", { required: "Name is required" })}
+                    className={`w-full px-4 py-3 bg-background border ${errors.name ? 'border-red-500' : 'border-gray-200'} rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground`}
                     placeholder="e.g. John Doe"
                   />
+                  {errors.name && (
+                    <span className="text-[10px] text-red-500 font-mono mt-1 block">{errors.name.message}</span>
+                  )}
                 </div>
                 <div>
                   <label className="block text-xs font-mono font-bold text-muted uppercase tracking-wider mb-2">Email Address</label>
                   <input
                     type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 bg-background border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground"
+                    {...register("email", { 
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: "Invalid email address"
+                      }
+                    })}
+                    className={`w-full px-4 py-3 bg-background border ${errors.email ? 'border-red-500' : 'border-gray-200'} rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground`}
                     placeholder="e.g. john@company.com"
                   />
+                  {errors.email && (
+                    <span className="text-[10px] text-red-500 font-mono mt-1 block">{errors.email.message}</span>
+                  )}
                 </div>
               </div>
 
@@ -82,18 +133,18 @@ export default function Contact() {
                   <label className="block text-xs font-mono font-bold text-muted uppercase tracking-wider mb-2">Company / Organization</label>
                   <input
                     type="text"
-                    required
-                    value={formData.company}
-                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full px-4 py-3 bg-background border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground"
+                    {...register("company", { required: "Company name is required" })}
+                    className={`w-full px-4 py-3 bg-background border ${errors.company ? 'border-red-500' : 'border-gray-200'} rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground`}
                     placeholder="e.g. Acme Corp"
                   />
+                  {errors.company && (
+                    <span className="text-[10px] text-red-500 font-mono mt-1 block">{errors.company.message}</span>
+                  )}
                 </div>
                 <div>
                   <label className="block text-xs font-mono font-bold text-muted uppercase tracking-wider mb-2">Estimated Budget</label>
                   <select
-                    value={formData.budget}
-                    onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                    {...register("budget")}
                     className="w-full px-4 py-3 bg-background border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground"
                   >
                     <option>$10k - $25k</option>
@@ -107,8 +158,7 @@ export default function Contact() {
               <div>
                 <label className="block text-xs font-mono font-bold text-muted uppercase tracking-wider mb-2">Referral Source</label>
                 <select
-                  value={formData.referral}
-                  onChange={(e) => setFormData({ ...formData, referral: e.target.value })}
+                  {...register("referral")}
                   className="w-full px-4 py-3 bg-background border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground"
                 >
                   <option>Google Search</option>
@@ -122,20 +172,22 @@ export default function Contact() {
               <div>
                 <label className="block text-xs font-mono font-bold text-muted uppercase tracking-wider mb-2">Project Brief &amp; Stack Requirements</label>
                 <textarea
-                  required
                   rows={5}
-                  value={formData.brief}
-                  onChange={(e) => setFormData({ ...formData, brief: e.target.value })}
-                  className="w-full px-4 py-3 bg-background border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground resize-none"
+                  {...register("brief", { required: "Project brief details are required" })}
+                  className={`w-full px-4 py-3 bg-background border ${errors.brief ? 'border-red-500' : 'border-gray-200'} rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground resize-none`}
                   placeholder="Tell us about the problems you are trying to solve, critical timeline specifications, and preferred technologies (e.g. Next.js, Go, Python, AWS)..."
                 />
+                {errors.brief && (
+                  <span className="text-[10px] text-red-500 font-mono mt-1 block">{errors.brief.message}</span>
+                )}
               </div>
 
               <button
                 type="submit"
-                className="w-full py-4 bg-primary text-white font-bold rounded-lg hover:bg-[#0d645e] transition-colors shadow-sm text-sm"
+                disabled={isSubmitting}
+                className="w-full py-4 bg-primary text-white font-bold rounded-lg hover:bg-[#0d645e] transition-all duration-300 shadow-sm text-sm active:scale-[0.99] disabled:bg-primary/50 disabled:cursor-not-allowed"
               >
-                Submit Scoping Request
+                {isSubmitting ? "Submitting Scoping Details..." : "Submit Scoping Request"}
               </button>
             </form>
           )}

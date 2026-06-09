@@ -31,17 +31,10 @@ export default function NotFound() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col justify-between relative overflow-hidden font-sans">
+    <main className="min-h-[70vh] bg-background text-foreground flex flex-col justify-center relative overflow-hidden font-sans py-12">
       {/* Background patterns */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-tint/20 rounded-full blur-[100px] -z-10 animate-pulse-glow" />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(15,118,110,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(15,118,110,0.01)_1px,transparent_1px)] bg-[size:50px_50px] -z-10" />
-
-      {/* Mini-Header */}
-      <header className="w-full max-w-7xl mx-auto px-6 md:px-12 py-6 flex items-center">
-        <Link href="/" className="font-mono text-xl font-black tracking-tighter text-foreground uppercase">
-          CODEX<span className="text-primary font-light">NEURAL</span>
-        </Link>
-      </header>
 
       {/* Main 404 Content */}
       <div className="max-w-3xl mx-auto px-6 py-16 flex-grow flex flex-col justify-center w-full z-10">
@@ -99,12 +92,6 @@ export default function NotFound() {
           </Link>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="w-full max-w-7xl mx-auto px-6 md:px-12 py-8 border-t border-gray-200 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-muted relative z-10">
-        <p>&copy; {new Date().getFullYear()} CODEX NEURAL. ALL RIGHTS RESERVED.</p>
-        <p>ESTABLISHED IN NEPAL // GLOBAL OPERATIONS</p>
-      </footer>
     </main>
   );
 }

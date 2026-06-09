@@ -2,90 +2,19 @@
 
 import Link from "next/link";
 
-interface TeamMember {
-  name: string;
-  role: string;
-  bio: string;
-  linkedin: string;
-  github: string;
-  twitter?: string;
-}
-
-const team: TeamMember[] = [
-  {
-    name: "Manohar Singh",
-    role: "Founder & CEO",
-    bio: "Leading strategic vision and operational excellence. Orchestrating business development, client relations, and day-to-day operations.",
-    linkedin: "https://www.linkedin.com/in/manohar-cn",
-    github: "https://github.com/Manoharaya",
-    twitter: "https://x.com/codexneural"
-  },
-  {
-    name: "Anuj Pokhrel",
-    role: "CTO & Backend Developer",
-    bio: "Architecting scalable backend systems and leading technical strategy. Building robust server infrastructure with focus on security and reliability.",
-    linkedin: "https://www.linkedin.com/in/anujpokharel2468",
-    github: "https://github.com/Anuj12Pokharel",
-    twitter: "https://x.com/codexneural"
-  },
-  {
-    name: "Aman Yadav",
-    role: "Advisor & Data Analysis Specialist",
-    bio: "Providing strategic guidance and extracting actionable insights from complex datasets. Driving data-driven decision making and business intelligence.",
-    linkedin: "https://www.linkedin.com/company/codexneural",
-    github: "https://github.com/Manoharaya",
-    twitter: "https://x.com/codexneural"
-  },
-  {
-    name: "Rahul Sah",
-    role: "Backend Developer",
-    bio: "Specializing in the development of robust, scalable backend architectures. Ensuring high performance and seamless server-side integration.",
-    linkedin: "https://www.linkedin.com/in/rahul-kumar-sah-b77885148/",
-    github: "https://github.com/rahul-4321/",
-    twitter: "https://x.com/codexneural"
-  },
-  {
-    name: "Anjali Singh",
-    role: "Frontend Developer",
-    bio: "Crafting responsive, performant user interfaces with modern frameworks. Designing intuitive user experiences and interactive implementations.",
-    linkedin: "https://www.linkedin.com/in/anjali-singh-11138b271/",
-    github: "https://github.com/Anjalisingh44",
-    twitter: "https://x.com/codexneural"
-  },
-  {
-    name: "Priti Gupta",
-    role: "SEO Specialist",
-    bio: "Optimizing digital presence and search visibility. Implementing data-driven SEO strategies to drive organic growth and improve rankings.",
-    linkedin: "https://www.linkedin.com/in/priti-gupta-1b5a68217",
-    github: "https://github.com/priteegupta",
-    twitter: "https://x.com/codexneural"
-  },
-  {
-    name: "Bibek Sah",
-    role: "DevOps Engineer",
-    bio: "Building intelligent automation pipelines and CI/CD workflows. Streamlining development processes through infrastructure as code.",
-    linkedin: "https://www.linkedin.com/in/bibek-shah-8b460b2bb/",
-    github: "https://github.com/bibekshah220",
-    twitter: "https://x.com/codexneural"
-  }
-];
-
 export default function About() {
-
-
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col justify-between relative overflow-hidden font-sans">
+    <main className="min-h-screen bg-background text-foreground flex flex-col justify-between relative overflow-hidden font-sans z-10">
+      
       {/* Background patterns */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-tint/20 rounded-full blur-[100px] -z-10 animate-pulse-glow" />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(15,118,110,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(15,118,110,0.01)_1px,transparent_1px)] bg-[size:50px_50px] -z-10" />
 
       {/* Main Content */}
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 flex-grow w-full z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-24 flex-grow w-full">
         
         {/* Mission Hero */}
-        <section className="max-w-3xl mb-20 animate-fade-in-up">
+        <section className="max-w-3xl mb-20">
           <p className="text-primary font-mono text-xs font-bold tracking-widest uppercase mb-3">About Codex Neural</p>
           <h1 className="text-4xl md:text-6xl font-heading font-black tracking-tight text-foreground mb-6 leading-tight">
             High-Performance <br />
@@ -189,36 +118,21 @@ export default function About() {
           </div>
         </section>
 
-        {/* Team Grid */}
-        <section className="mb-24">
-          <div className="max-w-3xl mb-12">
-            <span className="text-xs font-mono font-bold text-primary tracking-widest uppercase block mb-2">Our People</span>
-            <h2 className="text-2xl md:text-3xl font-heading font-extrabold text-foreground">Meet the Network</h2>
+        {/* Meet the Team CTA */}
+        <section className="mb-24 p-8 bg-surface border border-gray-200 rounded-2xl shadow-sm max-w-5xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="max-w-xl">
+            <span className="text-[10px] font-mono font-bold text-primary uppercase tracking-wider block mb-1">Our Roster</span>
+            <h3 className="text-2xl font-bold font-heading text-foreground mb-2">Meet the Network</h3>
+            <p className="text-xs text-muted leading-relaxed font-sans">
+              We are a team of 8 backend architects, frontend specialists, data analysts, and designers collaborating in Kathmandu. Meet our engineers and advisors.
+            </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {team.map((member) => (
-              <div key={member.name} className="p-6 bg-surface border border-gray-200 rounded-xl shadow-sm hover:shadow-premium transition-all duration-300 flex flex-col justify-between">
-                <div>
-                  <h3 className="text-lg font-bold text-foreground mb-1 font-heading">{member.name}</h3>
-                  <p className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-4">{member.role}</p>
-                  <p className="text-xs text-muted leading-relaxed mb-6 font-sans">{member.bio}</p>
-                </div>
-                <div className="flex gap-4 pt-4 border-t border-gray-100">
-                  <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-muted hover:text-primary transition-colors flex items-center gap-1">
-                    LinkedIn
-                  </a>
-                  <a href={member.github} target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-muted hover:text-primary transition-colors flex items-center gap-1">
-                    GitHub
-                  </a>
-                  {member.twitter && (
-                    <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-muted hover:text-primary transition-colors flex items-center gap-1">
-                      Twitter
-                    </a>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+          <Link
+            href="/team"
+            className="px-6 py-3 bg-primary hover:bg-[#0c5953] text-white font-bold text-xs rounded-lg transition-colors font-mono tracking-wider flex-shrink-0"
+          >
+            VIEW TEAM MEMBERS &rarr;
+          </Link>
         </section>
 
         {/* Location Block */}
@@ -238,7 +152,7 @@ export default function About() {
           <div className="h-64 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center relative overflow-hidden">
             {/* Placeholder graphic representing a neural globe or map */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(15,118,110,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(15,118,110,0.02)_1px,transparent_1px)] bg-[size:20px_20px]" />
-            <div className="w-16 h-16 bg-tint rounded-full blur-xl animate-pulse-glow absolute" />
+            <div className="w-16 h-16 bg-tint rounded-full blur-xl absolute" />
             <div className="relative font-mono text-[10px] text-primary/80 font-bold p-6 text-center">
               CODEX NEURAL LABS<br />
               [27.7172° N, 85.3240° E]<br />
