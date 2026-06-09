@@ -118,28 +118,28 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/services/web-development" className="hover:text-primary transition-colors">
-                Web Development
-              </Link>
-            </li>
-            <li>
-              <Link href="/services/app-development" className="hover:text-primary transition-colors">
-                Mobile Apps
+              <Link href="/services/web-app-development" className="hover:text-primary transition-colors">
+                Web & App Development
               </Link>
             </li>
             <li>
               <Link href="/services/system-software" className="hover:text-primary transition-colors">
-                Systems Software
+                Systems & Software
               </Link>
             </li>
             <li>
               <Link href="/services/ui-ux" className="hover:text-primary transition-colors">
-                UI/UX Design Studio
+                UI/UX Design
               </Link>
             </li>
             <li>
               <Link href="/services/web3-blockchain" className="hover:text-primary transition-colors">
                 Blockchain & Web3
+              </Link>
+            </li>
+            <li>
+              <Link href="/services/digital-growth" className="hover:text-primary transition-colors">
+                Digital Growth
               </Link>
             </li>
           </ul>

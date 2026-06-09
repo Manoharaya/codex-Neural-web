@@ -103,16 +103,10 @@ export default function NavBar() {
                   🧠 AI & Machine Learning
                 </Link>
                 <Link
-                  href="/services/web-development"
+                  href="/services/web-app-development"
                   className="p-2 hover:bg-tint/30 rounded-lg text-xs font-semibold text-foreground transition-colors"
                 >
-                  💻 Web Development
-                </Link>
-                <Link
-                  href="/services/app-development"
-                  className="p-2 hover:bg-tint/30 rounded-lg text-xs font-semibold text-foreground transition-colors"
-                >
-                  📱 Mobile App Development
+                  💻 Web & App Development
                 </Link>
                 <Link
                   href="/services/system-software"
@@ -124,13 +118,19 @@ export default function NavBar() {
                   href="/services/ui-ux"
                   className="p-2 hover:bg-tint/30 rounded-lg text-xs font-semibold text-foreground transition-colors"
                 >
-                  🎨 UI/UX Design Studio
+                  🎨 UI/UX Design
                 </Link>
                 <Link
                   href="/services/web3-blockchain"
                   className="p-2 hover:bg-tint/30 rounded-lg text-xs font-semibold text-foreground transition-colors"
                 >
                   🔗 Blockchain & Web3
+                </Link>
+                <Link
+                  href="/services/digital-growth"
+                  className="p-2 hover:bg-tint/30 rounded-lg text-xs font-semibold text-foreground transition-colors"
+                >
+                  📈 Digital Growth
                 </Link>
               </div>
             )}
