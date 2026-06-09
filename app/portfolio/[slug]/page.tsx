@@ -2,13 +2,24 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { useState } from "react";
+
+interface Metric {
+  value: string;
+  label: string;
+  desc: string;
+}
 
 interface CaseStudyDetail {
   title: string;
   client: string;
+  sector: string;
+  timeline: string;
+  role: string;
   challenge: string;
   solution: string;
   outcomes: string;
+  metrics: Metric[];
   tech: string[];
 }
 
@@ -16,103 +27,282 @@ const caseDetailsMap: Record<string, CaseStudyDetail> = {
   "enterprise-saas": {
     title: "Enterprise SaaS Migration",
     client: "Optima Health",
-    challenge: "The client possessed a legacy healthcare portal suffering from latency spikes, slow page load times, and poor SEO crawl indexes due to monolithic, client-rendered structures.",
-    solution: "We decoupled their frontend into a modern Next.js 14 App Router layout hosted on a serverless architecture, pulling patient data via secure API microservices.",
-    outcomes: "First Contentful Paint (FCP) dropped by 60% (from 2.4s to 0.9s), leading to a 35% increase in user retention and better search indexes.",
-    tech: ["Next.js 14", "TypeScript", "Tailwind CSS", "Go Microservices", "Amazon Web Services (AWS)"]
+    sector: "Healthcare & FinTech",
+    timeline: "5 Months (2024)",
+    role: "Cloud Architecture & Full-Stack Frontend",
+    challenge: "Optima Health's legacy portal served over 50k active patients daily but suffered from severe latency spikes during peak hours. Client-rendered monolithic pages resulted in a poor Google Core Web Vitals score (FCP of 2.4s) and blocked search engines from indexing critical public health documentation.",
+    solution: "We decoupled their web layout into a modern Next.js 14 App Router codebase hosted on Vercel Edge, caching public content at edge nodes. Dynamic patient data was queried via secure server-to-server Go microservices. We optimized image loaders, lazy-loaded offscreen components, and implemented rigorous bundle budgeting.",
+    outcomes: "The new portal loads instantly worldwide. Mobile conversion rates spiked, server overhead dropped significantly, and administrative support cases regarding portal downtime fell to zero.",
+    metrics: [
+      { value: "0.9s", label: "First Contentful Paint", desc: "Reduced from 2.4s, putting the portal in the 99th percentile of speed." },
+      { value: "+35%", label: "User Retention", desc: "A significant boost in recurring patient log-ins and platform engagement." },
+      { value: "99.99%", label: "System Uptime", desc: "Achieved via decoupled serverless architecture on AWS and Vercel edge." }
+    ],
+    tech: ["Next.js 14", "TypeScript", "Tailwind CSS", "Go Microservices", "Amazon Web Services (AWS)", "Vercel Edge"]
   },
   "ai-automation": {
     title: "AI Scoping & Automation Engine",
     client: "Vektor Retail",
-    challenge: "Processing customer intent and routing tickets manually took hours, decreasing customer satisfaction metrics.",
-    solution: "We designed a custom machine learning pipeline using Python (FastAPI) to categorize incoming customer requests, injecting vectorized context into open-source LLM instances (Llama 3) for quick automated scoping drafts.",
-    outcomes: "Ticket response latency dropped by 80%, reducing customer support operations costs by 45%.",
-    tech: ["Python", "PyTorch", "FastAPI", "Sanity CMS", "PostgreSQL", "Llama 3 Model"]
+    sector: "E-Commerce Logistics",
+    timeline: "4 Months (2024)",
+    role: "AI Pipeline Engineering & RAG Design",
+    challenge: "Vektor Retail handles over 10,000 inquiries daily across different departments. Manual ticket categorisation took up to 6 hours per ticket, leading to major delays and a decline in customer satisfaction scores. Existing auto-responders lacked semantic accuracy.",
+    solution: "We built an intelligent intake pipeline using FastAPI. Incoming emails are embedded using OpenAI embeddings and checked against a Pinecone vector index. Relevant company context is injected into fine-tuned Llama 3 models, drafting a high-accuracy, personalized response and routing the ticket to the correct human queue.",
+    outcomes: "The customer service department reduced ticket backlog to zero, allowing support agents to focus on complex, high-tier inquiries.",
+    metrics: [
+      { value: "-80%", label: "Response Latency", desc: "Average response/routing time dropped from 6 hours to under 30 seconds." },
+      { value: "45%", label: "Support Cost Saved", desc: "Significant operational cost savings in customer support divisions." },
+      { value: "94%", label: "Intention Accuracy", desc: "High semantic accuracy in classifying complex multi-topic inquiries." }
+    ],
+    tech: ["Python", "PyTorch", "FastAPI", "Pinecone DB", "PostgreSQL", "Llama 3 Model", "Sanity CMS"]
   },
   "web3-dex": {
     title: "DeFi Wallet Protocol",
     client: "Aether Labs",
-    challenge: "The team needed to deploy secure, gas-optimized staking smart contracts to manage ERC-20 token distributions with low transaction costs.",
-    solution: "We engineered Solidity staking contracts, verified using Foundry test harnesses, and built a custom React Web3 frontend utilizing RainbowKit and Wagmi context libraries.",
-    outcomes: "Successfully deployed smart contracts with 25% lower gas costs compared to typical competitor staking contracts.",
-    tech: ["Solidity", "Foundry", "React.js", "Tailwind CSS", "Wagmi & Ethers.js"]
+    sector: "Decentralized Finance",
+    timeline: "3 Months (2023)",
+    role: "Smart Contract Engineering & Web3 Integration",
+    challenge: "Aether Labs needed to deploy a high-yield ERC-20 staking contract managing over $10M in assets. High Ethereum gas prices threatened to eat into user yields, and smart contract security vulnerabilities were a major existential threat to the launch.",
+    solution: "We engineered custom Solidity staking contracts using gas-optimized storage slots and loop optimizations. We wrote a rigorous testing suite in Foundry with 100% branch coverage and invariant testing, followed by building a sleek frontend with Wagmi and RainbowKit.",
+    outcomes: "The platform launched with zero security incidents and industry-leading gas efficiency, driving rapid adoption within the first week of deployment.",
+    metrics: [
+      { value: "-25%", label: "Gas Transaction Fees", desc: "Optimized bytecode execution compared to standard ERC-20 staking contracts." },
+      { value: "$12M+", label: "Total Value Locked", desc: "Reached within 14 days of smart contract mainnet deployment." },
+      { value: "Zero", label: "Security Exploits", desc: "Verified via Foundry testing frameworks and certified smart contract audit." }
+    ],
+    tech: ["Solidity", "Foundry", "React.js", "Tailwind CSS", "Wagmi", "Ethers.js", "RainbowKit"]
   }
 };
 
 export default function CaseDetailPage({ params }: { params: { slug: string } }) {
   const project = caseDetailsMap[params.slug];
+  const [mobileMenu, setMobileMenu] = useState(false);
+  const [servicesDropdown, setServicesDropdown] = useState(false);
+  const [companyDropdown, setCompanyDropdown] = useState(false);
   
   if (!project) {
     notFound();
   }
 
+  // Get next project slug dynamically
+  const slugs = Object.keys(caseDetailsMap);
+  const currentIndex = slugs.indexOf(params.slug);
+  const nextSlug = slugs[(currentIndex + 1) % slugs.length];
+  const nextProject = caseDetailsMap[nextSlug];
+
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col justify-between font-sans">
-      {/* Header */}
-      <header className="w-full max-w-7xl mx-auto px-6 md:px-12 py-6 flex items-center justify-between">
-        <div className="flex items-center gap-8">
-          <Link href="/" className="font-mono text-xl font-black tracking-tighter text-foreground uppercase">
-            CODEX<span className="text-primary font-light">NEURAL</span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted">
-            <Link href="/services" className="hover:text-foreground transition-colors duration-300">Services</Link>
-            <Link href="/portfolio" className="text-foreground font-semibold">Work</Link>
-            <Link href="/about" className="hover:text-foreground transition-colors duration-300">About</Link>
-          </nav>
+    <main className="min-h-screen bg-background text-foreground flex flex-col justify-between relative overflow-hidden font-sans">
+      {/* Decorative background grid and glowing blob */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-tint/20 rounded-full blur-[100px] -z-10 animate-pulse-glow" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(15,118,110,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(15,118,110,0.01)_1px,transparent_1px)] bg-[size:50px_50px] -z-10" />
+
+      {/* Sticky Header */}
+      <header className="sticky top-0 w-full bg-background/80 backdrop-blur-md border-b border-gray-200 z-50">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between relative">
+          <div className="flex items-center gap-10">
+            <Link href="/" className="font-mono text-xl font-black tracking-tighter text-foreground uppercase">
+              CODEX<span className="text-primary font-light">NEURAL</span>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted">
+              {/* Services Dropdown */}
+              <div 
+                className="relative"
+                onMouseEnter={() => setServicesDropdown(true)}
+                onMouseLeave={() => setServicesDropdown(false)}
+              >
+                <button className="hover:text-foreground transition-colors duration-300 py-2 flex items-center gap-1">
+                  Services
+                  <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${servicesDropdown ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {servicesDropdown && (
+                  <div className="absolute top-full left-0 w-64 bg-surface border border-gray-200 rounded-xl shadow-lg p-4 grid gap-2 z-50 animate-fade-in-up">
+                    <Link href="/services/ai-ml" className="p-2 hover:bg-tint/30 rounded-lg text-xs font-semibold text-foreground transition-colors">🧠 AI & Machine Learning</Link>
+                    <Link href="/services/web-development" className="p-2 hover:bg-tint/30 rounded-lg text-xs font-semibold text-foreground transition-colors">💻 Web Development</Link>
+                    <Link href="/services/app-development" className="p-2 hover:bg-tint/30 rounded-lg text-xs font-semibold text-foreground transition-colors">📱 Mobile App Development</Link>
+                    <Link href="/services/system-software" className="p-2 hover:bg-tint/30 rounded-lg text-xs font-semibold text-foreground transition-colors">⚙️ Systems & Software</Link>
+                    <Link href="/services/ui-ux" className="p-2 hover:bg-tint/30 rounded-lg text-xs font-semibold text-foreground transition-colors">🎨 UI/UX Design Studio</Link>
+                    <Link href="/services/web3-blockchain" className="p-2 hover:bg-tint/30 rounded-lg text-xs font-semibold text-foreground transition-colors">🔗 Blockchain & Web3</Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Company Dropdown */}
+              <div 
+                className="relative"
+                onMouseEnter={() => setCompanyDropdown(true)}
+                onMouseLeave={() => setCompanyDropdown(false)}
+              >
+                <button className="hover:text-foreground transition-colors duration-300 py-2 flex items-center gap-1">
+                  Company
+                  <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${companyDropdown ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {companyDropdown && (
+                  <div className="absolute top-full left-0 w-48 bg-surface border border-gray-200 rounded-xl shadow-lg p-4 grid gap-2 z-50 animate-fade-in-up">
+                    <Link href="/about" className="p-2 hover:bg-tint/30 rounded-lg text-xs font-semibold text-foreground transition-colors">About Us</Link>
+                    <Link href="/careers" className="p-2 hover:bg-tint/30 rounded-lg text-xs font-semibold text-foreground transition-colors">Careers</Link>
+                    <Link href="/privacy" className="p-2 hover:bg-tint/30 rounded-lg text-xs font-semibold text-foreground transition-colors">Privacy Policy</Link>
+                  </div>
+                )}
+              </div>
+
+              <Link href="/portfolio" className="text-foreground font-semibold py-2">
+                Work
+              </Link>
+              <Link href="/blog" className="hover:text-foreground transition-colors duration-300 py-2">
+                Insights
+              </Link>
+            </nav>
+          </div>
+
+          <div className="hidden md:block">
+            <Link href="/contact" className="px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-[#0d645e] transition-all duration-300 shadow-sm">
+              Start a project
+            </Link>
+          </div>
+
+          {/* Mobile Hamburger Toggle */}
+          <button 
+            onClick={() => setMobileMenu(!mobileMenu)}
+            className="md:hidden p-2 text-foreground focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d={mobileMenu ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+            </svg>
+          </button>
         </div>
-        <div>
-          <Link href="/contact" className="px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-[#0d645e] transition-all duration-300">
-            Start a project
-          </Link>
-        </div>
+
+        {/* Mobile menu overlay */}
+        {mobileMenu && (
+          <div className="fixed inset-0 top-[73px] bg-background/95 backdrop-blur-md z-40 flex flex-col p-6 animate-fade-in-up md:hidden border-t border-gray-100">
+            <nav className="flex flex-col gap-6 text-lg font-bold text-foreground mb-8">
+              <Link href="/services" onClick={() => setMobileMenu(false)} className="hover:text-primary">Services</Link>
+              <Link href="/portfolio" onClick={() => setMobileMenu(false)} className="hover:text-primary">Work</Link>
+              <Link href="/about" onClick={() => setMobileMenu(false)} className="hover:text-primary">About Us</Link>
+              <Link href="/careers" onClick={() => setMobileMenu(false)} className="hover:text-primary">Careers</Link>
+              <Link href="/blog" onClick={() => setMobileMenu(false)} className="hover:text-primary">Insights</Link>
+              <Link href="/privacy" onClick={() => setMobileMenu(false)} className="hover:text-primary">Privacy Policy</Link>
+            </nav>
+            <Link 
+              href="/contact"
+              onClick={() => setMobileMenu(false)}
+              className="w-full py-4 bg-primary text-white text-center font-bold rounded-lg hover:bg-[#0d645e] transition-all"
+            >
+              Start a Project
+            </Link>
+          </div>
+        )}
       </header>
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 flex-grow">
-        <Link href="/portfolio" className="text-primary font-mono text-xs font-semibold tracking-wider hover:underline mb-4 inline-block">
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 flex-grow w-full z-10">
+        <Link href="/portfolio" className="text-primary font-mono text-xs font-semibold tracking-wider hover:underline mb-6 inline-block">
           &larr; BACK TO CASE STUDIES
         </Link>
         
-        <div className="max-w-3xl mb-12">
-          <p className="text-primary font-semibold text-xs tracking-wider uppercase mb-2">Client: {project.client}</p>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground mb-6">
+        {/* Project Title and Client Hero */}
+        <div className="max-w-4xl mb-12 animate-fade-in-up">
+          <p className="text-primary font-mono text-xs font-bold tracking-widest uppercase mb-3">Case Study // {project.client}</p>
+          <h1 className="text-4xl md:text-6xl font-heading font-black tracking-tight text-foreground mb-6 leading-tight">
             {project.title}
           </h1>
         </div>
 
-        {/* Challenge & Solution */}
-        <section className="grid lg:grid-cols-2 gap-12 mb-16 max-w-5xl">
+        {/* Project Quick Facts / Stat Strip */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 bg-surface border border-gray-200 rounded-xl shadow-sm mb-16 max-w-5xl font-sans">
           <div>
-            <h2 className="text-xl font-bold text-foreground mb-4">The Challenge</h2>
-            <p className="text-muted leading-relaxed text-sm md:text-base">{project.challenge}</p>
+            <span className="text-xs font-mono text-muted uppercase tracking-wider block mb-1">Client</span>
+            <span className="text-sm font-bold text-foreground">{project.client}</span>
           </div>
           <div>
-            <h2 className="text-xl font-bold text-foreground mb-4">Our Solution</h2>
+            <span className="text-xs font-mono text-muted uppercase tracking-wider block mb-1">Sector</span>
+            <span className="text-sm font-bold text-foreground">{project.sector}</span>
+          </div>
+          <div>
+            <span className="text-xs font-mono text-muted uppercase tracking-wider block mb-1">Timeline</span>
+            <span className="text-sm font-bold text-foreground">{project.timeline}</span>
+          </div>
+          <div>
+            <span className="text-xs font-mono text-muted uppercase tracking-wider block mb-1">Our Role</span>
+            <span className="text-sm font-bold text-foreground">{project.role}</span>
+          </div>
+        </div>
+
+        {/* Challenge & Solution Grid */}
+        <section className="grid lg:grid-cols-2 gap-12 mb-16 max-w-5xl">
+          <div className="p-8 bg-surface/50 border border-gray-200 rounded-xl">
+            <h2 className="text-xl md:text-2xl font-heading font-bold text-foreground mb-4 flex items-center gap-2">
+              <span className="w-1.5 h-6 bg-primary rounded-full"></span>
+              The Challenge
+            </h2>
+            <p className="text-muted leading-relaxed text-sm md:text-base">{project.challenge}</p>
+          </div>
+          <div className="p-8 bg-tint/10 border border-primary/20 rounded-xl">
+            <h2 className="text-xl md:text-2xl font-heading font-bold text-foreground mb-4 flex items-center gap-2">
+              <span className="w-1.5 h-6 bg-accent rounded-full"></span>
+              Our Solution
+            </h2>
             <p className="text-muted leading-relaxed text-sm md:text-base">{project.solution}</p>
           </div>
         </section>
 
-        {/* Outcomes */}
-        <section className="p-8 bg-surface border border-gray-200 rounded-xl shadow-sm max-w-5xl mb-12">
-          <h3 className="text-sm font-mono font-bold tracking-wider text-primary uppercase mb-2">Proven Outcomes</h3>
-          <p className="text-muted leading-relaxed text-sm md:text-base">{project.outcomes}</p>
+        {/* Outcomes & Metrics section */}
+        <section className="mb-16 max-w-5xl">
+          <h2 className="text-2xl font-heading font-extrabold text-foreground mb-8">Key Performance Metrics</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            {project.metrics.map((metric, i) => (
+              <div key={i} className="p-8 bg-surface border border-gray-200 rounded-xl shadow-sm hover:shadow-premium transition-all duration-300">
+                <span className="text-4xl md:text-5xl font-heading font-black text-primary block mb-2">{metric.value}</span>
+                <span className="text-sm font-bold text-foreground block mb-2">{metric.label}</span>
+                <p className="text-xs text-muted leading-relaxed">{metric.desc}</p>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* Tech Stack Used */}
-        <section className="max-w-5xl mb-16">
-          <h3 className="text-xs font-bold text-muted uppercase tracking-wider mb-4">Technology Stack</h3>
+        <section className="max-w-5xl mb-20">
+          <h3 className="text-xs font-mono font-bold text-muted uppercase tracking-wider mb-4">Technology Stack</h3>
           <div className="flex flex-wrap gap-2">
             {project.tech.map((t) => (
-              <span key={t} className="px-3 py-1 bg-gray-100 border border-gray-200 text-foreground text-xs rounded-full font-medium">
+              <span key={t} className="px-3 py-1 bg-surface border border-gray-200 text-foreground text-xs rounded-full font-medium font-mono">
                 {t}
               </span>
             ))}
           </div>
         </section>
+
+        {/* Next Project link banner */}
+        <section className="max-w-5xl p-8 bg-gradient-to-r from-primary to-accent rounded-xl text-white shadow-lg relative overflow-hidden group">
+          <div className="absolute right-0 bottom-0 opacity-10 font-mono text-9xl font-black select-none pointer-events-none translate-x-12 translate-y-12 transition-transform duration-500 group-hover:scale-110">
+            NEXT
+          </div>
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+              <span className="text-xs font-mono font-bold tracking-widest text-tint uppercase block mb-1">UP NEXT</span>
+              <h4 className="text-2xl font-heading font-bold">{nextProject.title}</h4>
+              <p className="text-xs text-tint/90 font-sans mt-1">Read how we deployed high-performance solutions for {nextProject.client}.</p>
+            </div>
+            <div>
+              <Link 
+                href={`/portfolio/${nextSlug}`} 
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-bold text-sm rounded-lg hover:bg-tint transition-all duration-300"
+              >
+                Read Next Case Study &rarr;
+              </Link>
+            </div>
+          </div>
+        </section>
       </div>
 
       {/* Footer */}
-      <footer className="w-full max-w-7xl mx-auto px-6 md:px-12 py-8 border-t border-gray-200 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-muted">
+      <footer className="w-full max-w-7xl mx-auto px-6 md:px-12 py-8 border-t border-gray-200 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-muted relative z-10">
         <p>&copy; {new Date().getFullYear()} CODEX NEURAL. ALL RIGHTS RESERVED.</p>
         <p>ESTABLISHED IN NEPAL // GLOBAL OPERATIONS</p>
       </footer>
