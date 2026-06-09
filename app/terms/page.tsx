@@ -1,23 +1,58 @@
-import React from "react";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Terms of Service | Codex Neural",
   description: "Terms governing website usage, software scoping agreements, and intellectual property limits under Nepal jurisdiction.",
+  alternates: {
+    canonical: "https://codexneural.com/terms",
+  },
+  openGraph: {
+    title: "Terms of Service | Codex Neural",
+    description: "Terms governing website usage, software scoping agreements, and intellectual property limits under Nepal jurisdiction.",
+    url: "https://codexneural.com/terms",
+    type: "website",
+  },
 };
 
 export default function TermsPage() {
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col justify-between font-sans relative z-10">
-      
-      {/* Content */}
-      <div className="max-w-4xl mx-auto px-6 md:px-12 py-24 flex-grow w-full">
-        <p className="text-primary font-mono text-xs font-bold tracking-widest uppercase mb-3">Legal Agreement</p>
-        <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight text-foreground mb-8">
-          Terms of Service
-        </h1>
+    <>
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://codexneural.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Terms of Service",
+                "item": "https://codexneural.com/terms"
+              }
+            ]
+          })
+        }}
+      />
+
+      <main id="main-content" className="min-h-screen bg-background text-foreground flex flex-col justify-between font-sans relative z-10">
         
-        <div className="prose prose-slate max-w-none text-muted leading-relaxed space-y-6 text-sm md:text-base font-sans">
-          <p className="font-mono text-xs"><em>Last updated: June 10, 2026</em></p>
+        {/* Content */}
+        <div className="max-w-4xl mx-auto px-6 md:px-12 py-24 flex-grow w-full">
+          <p className="text-primary font-mono text-xs font-bold tracking-widest uppercase mb-3">Legal Agreement</p>
+          <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight text-foreground mb-8">
+            Terms of Service
+          </h1>
+          
+          <div className="prose prose-slate max-w-none text-muted leading-relaxed space-y-6 text-sm md:text-base font-sans">
+            <p className="font-mono text-xs"><em>Last updated: June 10, 2026</em></p>
           
           <h2 className="text-xl font-bold font-heading text-foreground mt-8">1. Acceptance of Terms</h2>
           <p>
@@ -47,5 +82,6 @@ export default function TermsPage() {
       </div>
 
     </main>
+    </>
   );
 }

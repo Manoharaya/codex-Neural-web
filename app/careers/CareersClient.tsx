@@ -117,7 +117,7 @@ export default function CareersClient({ openings }: CareersClientProps) {
               <button
                 key={dept}
                 onClick={() => setSelectedDept(dept)}
-                className={`px-4 py-2 rounded-lg text-xs font-semibold border transition-all ${
+                className={`px-4 py-3 min-h-[44px] rounded-lg text-xs font-semibold border transition-all ${
                   selectedDept === dept
                     ? "bg-primary text-white border-primary"
                     : "bg-surface text-muted border-gray-200 hover:text-foreground"
@@ -147,7 +147,7 @@ export default function CareersClient({ openings }: CareersClientProps) {
                   </span>
                   <button 
                     onClick={() => handleApplyClick(job.title)}
-                    className="px-5 py-2.5 bg-primary text-white text-xs font-bold rounded-lg hover:bg-[#0d645e] transition-colors font-mono tracking-wider"
+                    className="px-5 py-2.5 min-h-[44px] inline-flex items-center justify-center bg-primary text-white text-xs font-bold rounded-lg hover:bg-[#0d645e] transition-colors font-mono tracking-wider"
                   >
                     APPLY NOW &rarr;
                   </button>
@@ -162,7 +162,7 @@ export default function CareersClient({ openings }: CareersClientProps) {
               <p className="text-xs mb-4">We are always scouting for talented developers. Submit a general query below.</p>
               <button
                 onClick={() => handleApplyClick("General Admittance Inquiry")}
-                className="px-4 py-2 border border-primary text-primary text-xs font-bold rounded-lg hover:bg-tint/30 transition-all font-mono tracking-wider"
+                className="px-4 py-3 min-h-[44px] inline-flex items-center justify-center border border-primary text-primary text-xs font-bold rounded-lg hover:bg-tint/30 transition-all font-mono tracking-wider"
               >
                 SUBMIT GENERAL APPLICATION
               </button>
@@ -177,7 +177,7 @@ export default function CareersClient({ openings }: CareersClientProps) {
           <div className="bg-surface border border-gray-200 rounded-xl shadow-lg w-full max-w-xl p-8 relative animate-fade-in-up">
             <button 
               onClick={() => setShowApplyModal(false)}
-              className="absolute top-4 right-4 text-muted hover:text-foreground text-xl focus:outline-none"
+              className="absolute top-2 right-2 text-muted hover:text-foreground text-2xl focus:outline-none w-11 h-11 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
               aria-label="Close modal"
             >
               &times;
@@ -193,11 +193,12 @@ export default function CareersClient({ openings }: CareersClientProps) {
             ) : (
               <form onSubmit={handleSubmit(onSubmitApplication)} className="space-y-4 font-sans">
                 <div>
-                  <label className="block text-xs font-mono font-bold text-muted uppercase tracking-wider mb-2">Full Name</label>
+                  <label htmlFor="apply-name" className="block text-xs font-mono font-bold text-muted uppercase tracking-wider mb-2">Full Name</label>
                   <input
+                    id="apply-name"
                     type="text"
                     {...register("name", { required: "Name is required" })}
-                    className={`w-full px-4 py-3 bg-background border ${errors.name ? 'border-red-500' : 'border-gray-200'} rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground`}
+                    className={`w-full min-h-[44px] px-4 py-3 bg-background border ${errors.name ? 'border-red-500' : 'border-gray-200'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-foreground`}
                     placeholder="e.g. Jane Doe"
                   />
                   {errors.name && (
@@ -205,8 +206,9 @@ export default function CareersClient({ openings }: CareersClientProps) {
                   )}
                 </div>
                 <div>
-                  <label className="block text-xs font-mono font-bold text-muted uppercase tracking-wider mb-2">Email Address</label>
+                  <label htmlFor="apply-email" className="block text-xs font-mono font-bold text-muted uppercase tracking-wider mb-2">Email Address</label>
                   <input
+                    id="apply-email"
                     type="email"
                     {...register("email", { 
                       required: "Email is required",
@@ -215,7 +217,7 @@ export default function CareersClient({ openings }: CareersClientProps) {
                         message: "Invalid email address"
                       }
                     })}
-                    className={`w-full px-4 py-3 bg-background border ${errors.email ? 'border-red-500' : 'border-gray-200'} rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground`}
+                    className={`w-full min-h-[44px] px-4 py-3 bg-background border ${errors.email ? 'border-red-500' : 'border-gray-200'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-foreground`}
                     placeholder="e.g. jane@company.com"
                   />
                   {errors.email && (
@@ -223,11 +225,12 @@ export default function CareersClient({ openings }: CareersClientProps) {
                   )}
                 </div>
                 <div>
-                  <label className="block text-xs font-mono font-bold text-muted uppercase tracking-wider mb-2">Cover Pitch (Short)</label>
+                  <label htmlFor="apply-pitch" className="block text-xs font-mono font-bold text-muted uppercase tracking-wider mb-2">Cover Pitch (Short)</label>
                   <textarea
+                    id="apply-pitch"
                     rows={4}
                     {...register("pitch", { required: "Cover pitch details are required" })}
-                    className={`w-full px-4 py-3 bg-background border ${errors.pitch ? 'border-red-500' : 'border-gray-200'} rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground resize-none`}
+                    className={`w-full px-4 py-3 bg-background border ${errors.pitch ? 'border-red-500' : 'border-gray-200'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-foreground resize-none`}
                     placeholder="Highlight your systems experience or AI training credentials..."
                   />
                   {errors.pitch && (
@@ -235,9 +238,10 @@ export default function CareersClient({ openings }: CareersClientProps) {
                   )}
                 </div>
                 <div>
-                  <label className="block text-xs font-mono font-bold text-muted uppercase tracking-wider mb-2">Attach CV / resume</label>
-                  <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-6 hover:bg-gray-50 transition-colors flex flex-col items-center justify-center text-center cursor-pointer">
+                  <label htmlFor="apply-cv" className="block text-xs font-mono font-bold text-muted uppercase tracking-wider mb-2">Attach CV / resume</label>
+                  <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-6 hover:bg-gray-50 transition-colors flex flex-col items-center justify-center text-center cursor-pointer min-h-[100px]">
                     <input
+                      id="apply-cv"
                       type="file"
                       accept=".pdf,.doc,.docx"
                       {...register("cv", { required: "CV file attachment is required" })}
@@ -256,7 +260,7 @@ export default function CareersClient({ openings }: CareersClientProps) {
 
                 <button
                   type="submit"
-                  className="w-full py-4 bg-primary text-white font-bold rounded-lg hover:bg-[#0d645e] transition-colors text-sm font-mono tracking-wider active:scale-[0.99]"
+                  className="w-full min-h-[48px] py-4 bg-primary text-white font-bold rounded-lg hover:bg-[#0d645e] transition-colors text-sm font-mono tracking-wider active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                 >
                   SUBMIT APPLICATION CREDENTIALS
                 </button>

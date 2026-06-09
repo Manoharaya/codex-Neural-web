@@ -48,7 +48,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
         style={{ width: `${scrollProgress}%` }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-24 flex-grow w-full relative z-10 font-sans">
+      <div id="main-content" className="max-w-7xl mx-auto px-6 md:px-12 py-24 flex-grow w-full relative z-10 font-sans">
         <Link 
           href="/blog" 
           className="text-primary font-mono text-xs font-semibold tracking-wider hover:underline mb-8 inline-block"

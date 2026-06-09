@@ -179,9 +179,21 @@ const mockCaseStudies: MockCaseStudy[] = [
     sector: "Healthcare & FinTech",
     timeline: "5 Months (2024)",
     role: "Cloud Architecture & Full-Stack Frontend",
-    challenge: "Optima Health's legacy portal served over 50k active patients daily but suffered from severe latency spikes during peak hours. Client-rendered monolithic pages resulted in a poor Google Core Web Vitals score (FCP of 2.4s) and blocked search engines from indexing critical public health documentation.",
-    solution: "We decoupled their web layout into a modern Next.js 14 App Router codebase hosted on Vercel Edge, caching public content at edge nodes. Dynamic patient data was queried via secure server-to-server Go microservices. We optimized image loaders, lazy-loaded offscreen components, and implemented rigorous bundle budgeting.",
-    outcomes: "The new portal loads instantly worldwide. Mobile conversion rates spiked, server overhead dropped significantly, and administrative support cases regarding portal downtime fell to zero.",
+    challenge: `Optima Health operated a legacy EHR patient portal serving over 50,000 active daily patients. However, the system's underlying monolithic server infrastructure struggled under concurrent request spikes, leading to severe API latency and frequent system timeouts during peak hours. Client-side rendering of medical histories caused an average First Contentful Paint (FCP) of 2.4 seconds, resulting in poor user satisfaction scores.
+
+Furthermore, because the patient portal's public facing sections (such as clinical updates and resource directories) were dynamically rendered via a client-side monolith, search engine crawlers were unable to parse or index critical public health documentation. This indexing block caused a significant loss in organic discoverability, resulting in severe search engine visibility penalties.
+
+Additionally, the monolithic database layout led to frequent table locks during write operations. Whenever hundreds of administrative users updated patient schedules concurrently, read transactions backed up, causing cascading timeouts across their entire operations network.`,
+    solution: `To solve these scaling issues, we engineered a completely decoupled, high-performance architecture. We migrated the client-facing frontends to Next.js 14 hosted on Vercel's global edge network. By utilizing Next.js's Incremental Static Regeneration (ISR) and server-side rendering, we ensured that static public directories were cached globally at edge nodes, while sensitive patient portals were rendered dynamically on demand.
+
+For the backend, we decoupled processing workloads into microservices written in Go, deployed in Docker containers on AWS ECS. A RabbitMQ message broker was introduced to handle transactional schedule updates asynchronously, buffering writes and completely eliminating database table locks.
+
+We also implemented pgvector in their PostgreSQL database, enabling semantic search capabilities for medical records. To optimize loading speeds, we implemented strict bundle budgeting, audited third-party scripts, lazy-loaded interactive graphing components, and converted all visual assets to optimized WebP formats.`,
+    outcomes: `The decoupled Edge architecture successfully resolved all performance bottlenecks. The patient portal now boasts sub-second initial load speeds worldwide, and Core Web Vitals scores reached a perfect FCP score of 0.9 seconds.
+
+By moving database operations to Go microservices and RabbitMQ write buffers, system locks were resolved completely, reducing scheduling write failure rates to absolute zero.
+
+Additionally, because public directories are now pre-rendered statically, search engine indexing succeeded, leading to a 35% boost in search visibility and organic patient log-ins. Support tickets regarding portal downtime dropped to zero, significantly lowering administrative overhead.`,
     metrics: [
       { value: "0.9s", label: "First Contentful Paint", desc: "Reduced from 2.4s, putting the portal in the 99th percentile of speed." },
       { value: "+35%", label: "User Retention", desc: "A significant boost in recurring patient log-ins and platform engagement." },
@@ -199,9 +211,21 @@ const mockCaseStudies: MockCaseStudy[] = [
     sector: "E-Commerce Logistics",
     timeline: "4 Months (2024)",
     role: "AI Pipeline Engineering & RAG Design",
-    challenge: "Vektor Retail handles over 10,000 inquiries daily across different departments. Manual ticket categorisation took up to 6 hours per ticket, leading to major delays and a decline in customer satisfaction scores. Existing auto-responders lacked semantic accuracy.",
-    solution: "We built an intelligent intake pipeline using FastAPI. Incoming emails are embedded using OpenAI embeddings and checked against a Pinecone vector index. Relevant company context is injected into fine-tuned Llama 3 models, drafting a high-accuracy, personalized response and routing the ticket to the correct human queue.",
-    outcomes: "The customer service department reduced ticket backlog to zero, allowing support agents to focus on complex, high-tier inquiries.",
+    challenge: `Vektor Retail handles over 10,000 inquiries daily across different departments. Manual ticket categorisation took up to 6 hours per ticket, leading to major delays and a decline in customer satisfaction scores. Existing auto-responders lacked semantic accuracy.
+
+The sheer volume of customer requests blocked operations leads from extracting structured insights from ticket histories, making it difficult to optimize catalog issues or supply chain delays.
+
+Security was also a critical bottleneck, as sending raw customer order details containing personal identifiers to external APIs without filters violated data protection regulations.`,
+    solution: `We built an intelligent intake pipeline using FastAPI. Incoming emails are embedded using OpenAI embeddings and checked against a Pinecone vector index. Relevant company context is injected into fine-tuned Llama 3 models, drafting a high-accuracy, personalized response and routing the ticket to the correct human queue.
+
+We set up a PII scrubbing middleware that automatically replaces names, addresses, and order numbers with placeholder hashes before payloads are dispatched to translation engines or external pipelines.
+
+Finally, we established a background data analytics node using PostgreSQL that parses processed inquiry labels, generating real-time dashboards mapping catalog error rates and regional shipping delays.`,
+    outcomes: `The customer service department reduced ticket backlog to zero, allowing support agents to focus on complex, high-tier inquiries.
+
+Average ticket routing and response times dropped from 6 hours to under 30 seconds, leading to a 40% jump in customer satisfaction ratings.
+
+Operational costs inside customer support divisions dropped by 45% due to the automated resolution of common queries. The PII scrubbing pipeline successfully prevented compliance violations, ensuring full regulatory alignment.`,
     metrics: [
       { value: "-80%", label: "Response Latency", desc: "Average response/routing time dropped from 6 hours to under 30 seconds." },
       { value: "45%", label: "Support Cost Saved", desc: "Significant operational cost savings in customer support divisions." },
@@ -219,9 +243,21 @@ const mockCaseStudies: MockCaseStudy[] = [
     sector: "Decentralized Finance",
     timeline: "3 Months (2023)",
     role: "Smart Contract Engineering & Web3 Integration",
-    challenge: "Aether Labs needed to deploy a high-yield ERC-20 staking contract managing over $10M in assets. High Ethereum gas prices threatened to eat into user yields, and smart contract security vulnerabilities were a major existential threat to the launch.",
-    solution: "We engineered custom Solidity staking contracts using gas-optimized storage slots and loop optimizations. We wrote a rigorous testing suite in Foundry with 100% branch coverage and invariant testing, followed by building a sleek frontend with Wagmi and RainbowKit.",
-    outcomes: "The platform launched with zero security incidents and industry-leading gas efficiency, driving rapid adoption within the first week of deployment.",
+    challenge: `Aether Labs aimed to launch an ERC-20 staking contract managing over $10M in Total Value Locked (TVL). However, high Ethereum gas prices threatened to eat into user yields, making micro-staking economically unviable. More critically, smart contract security vulnerabilities represented an existential risk; a single loophole in the staking logic could lead to complete, irreversible drainage of user assets.
+
+The client also faced major usability issues with existing wallet connection libraries. Slow connection states, unhandled RPC sync timeouts, and cryptic transaction error prompts caused high drop-off rates on their staking frontend dashboard.
+
+Finally, they needed a system that could handle staking distribution updates dynamically without running expensive loops that would exceed block gas limits, which would halt all user withdrawals.`,
+    solution: `We designed and deployed a suite of gas-optimized smart contracts in Solidity. We utilized custom storage slot packing, bitwise operations, and loop-free reward allocation algorithms (such as the Scaled Staking mechanism) to optimize bytecode execution, reducing transaction gas fees by 25%.
+
+To guarantee absolute security, we built a comprehensive testing framework in Foundry. We wrote extensive unit tests, fuzzing tests, and invariant tests with 100% branch coverage to simulate millions of user scenarios and identify boundary failures.
+
+For the user interface, we built a sleek React dashboard integrated with Wagmi and RainbowKit, utilizing custom RPC fallback grids to handle network latency. Transaction states were cached locally, showing clear visual cues and transaction guides to users during signatures.`,
+    outcomes: `The DeFi protocol launched with complete success. Within 14 days of smart contract mainnet deployment, the Total Value Locked (TVL) exceeded $12 million.
+
+Due to storage optimizations and Scaled Staking logic, transactions achieved a 25% drop in gas fees, making micro-staking viable for retail users.
+
+Most importantly, the platform has maintained a 100% security record with zero exploits. All invariant tests passed, and the smart contracts were certified by a top-tier security audit firm with zero findings. User wallet connection conversion rates rose by 40% due to the optimized Wagmi/RainbowKit implementation.`,
     metrics: [
       { value: "-25%", label: "Gas Transaction Fees", desc: "Optimized bytecode execution compared to standard ERC-20 staking contracts." },
       { value: "$12M+", label: "Total Value Locked", desc: "Reached within 14 days of smart contract mainnet deployment." },
@@ -239,9 +275,21 @@ const mockCaseStudies: MockCaseStudy[] = [
     sector: "High-Throughput Payments",
     timeline: "6 Months (2025)",
     role: "Microservices & Database Architect",
-    challenge: "LogPoint's ledger sync services experienced high failure rates and locks when parsing more than 5,000 concurrent database updates. This resulted in delayed transaction reconciliations and system-wide timeouts during month-end invoicing.",
-    solution: "We designed a decoupled queue architecture using Go microservices and RabbitMQ message brokers. Write operations were buffered and serialized via memory buffers, updating split tables in PostgreSQL. Real-time notifications were piped over low-latency WebSockets.",
-    outcomes: "System locks were eliminated completely. Reconciliation times dropped from 2 hours to under 3 minutes, with 100% processing reliability.",
+    challenge: `LogPoint's ledger sync services experienced high failure rates and locks when parsing more than 5,000 concurrent database updates. This resulted in delayed transaction reconciliations and system-wide timeouts during month-end invoicing.
+
+The legacy architecture processed billing logs synchronously, tying up main threads and blocking other endpoints. This caused a severe bottleneck for their customer dashboard, which frequently crashed during invoicing runs.
+
+Additionally, data integrity was compromised because incomplete database transactions were not properly rolled back during networking spikes.`,
+    solution: `We designed a decoupled queue architecture using Go microservices and RabbitMQ message brokers. Write operations were buffered and serialized via memory buffers, updating split tables in PostgreSQL. Real-time notifications were piped over low-latency WebSockets.
+
+We configured strict PostgreSQL transaction isolation levels and scripted a transactional rollback mechanism that triggers automatically if downstream services lose synchronization.
+
+The Go backend compiled to clean binary containers, which were automated for auto-scaling under AWS Elastic Container Service matching system workloads.`,
+    outcomes: `System locks were eliminated completely. Reconciliation times dropped from 2 hours to under 3 minutes, with 100% processing reliability.
+
+The customer dashboard maintained a 100% uptime score during month-end billing, running completely unaffected by transaction parsing spikes.
+
+LogPoint successfully scaled its billing ingestion capabilities, comfortably handling 15,000 concurrent invoice updates per second.`,
     metrics: [
       { value: "3 min", label: "Reconciliation Time", desc: "Reduced from 2 hours. Handled under peak concurrent load spikes." },
       { value: "0% locks", label: "Database Timeout", desc: "Locks resolved completely through write-ahead queuing buffers." },
@@ -259,9 +307,21 @@ const mockCaseStudies: MockCaseStudy[] = [
     sector: "Consumer FinTech",
     timeline: "4 Months (2025)",
     role: "Mobile App Lead Developer",
-    challenge: "Cedar Gate wanted to launch a secure consumer mobile wallet. However, slow network performance in rural regions led to frequent transaction timeouts and session drops, causing severe sync errors between client states and central ledgers.",
-    solution: "We engineered an offline-first hybrid mobile app using React Native. We built local storage nodes with SQLite databases to capture offline payloads, and scripted transactional queues that synchronize incrementally with Go API gateways once connectivity restores.",
-    outcomes: "User feedback scores reached 4.8/5. Sync errors dropped to zero and regional users reported crash-free operations under spotty mobile coverage.",
+    challenge: `Cedar Gate wanted to launch a secure consumer mobile wallet. However, slow network performance in rural regions led to frequent transaction timeouts and session drops, causing severe sync errors between client states and central ledgers.
+
+Users also reported severe screen lag on older mobile devices due to heavy data re-rendering loops in the frontend.
+
+Security was another critical parameter, demanding hardware-level encryption and biometrics validation on device states before making sensitive payment calls.`,
+    solution: `We engineered an offline-first hybrid mobile app using React Native. We built local storage nodes with SQLite databases to capture offline payloads, and scripted transactional queues that synchronize incrementally with Go API gateways once connectivity restores.
+
+We optimized React Native component rendering by using memoization and virtualized lists, cutting memory usage by 40%.
+
+We hooked directly into native iOS Keychain and Android Keystore APIs to encrypt private keys on-device, implementing biometric locks for authorization.`,
+    outcomes: `User feedback scores reached 4.8/5. Sync errors dropped to zero and regional users reported crash-free operations under spotty mobile coverage.
+
+The application launched smoothly, achieving over 100,000 downloads in its first month with zero critical payment failures recorded.
+
+Memory usage optimizations resolved layout stutter, creating a fluid 60fps interaction profile even on legacy low-end hardware.`,
     metrics: [
       { value: "0%", label: "Transaction Sync Errors", desc: "Incremental sync queues resolved all client-side state inconsistencies." },
       { value: "4.8/5", label: "App Store Rating", desc: "Strong customer feedback regarding speed and reliable transactions." },
@@ -275,54 +335,52 @@ const mockCaseStudies: MockCaseStudy[] = [
 
 const mockBlogs: MockBlogPost[] = [
   {
-    slug: "future-ai-enterprise",
-    title: "The Future of AI in Enterprise Infrastructure",
-    excerpt: "Exploring how global enterprises are adopting local, open-source large language models (LLMs) to preserve data sovereignty and reduce operational cloud spend.",
-    publishedAt: "June 8, 2026",
-    readTime: "5 min read",
-    category: "Applied Intelligence",
-    tags: ["AI/ML", "Enterprise", "Infrastructure", "Open Source"],
-    author: mockTeam[2], // Aman Yadav
-    body: [
-      "As artificial intelligence transitions from a novelty to a core systems requirement component, global enterprises face a critical fork in the road: lease proprietary cloud API interfaces or host local open-source LLM model weights.",
-      "Leasing proprietary models exposes enterprise systems to data sovereignty risks and high transactional costs. On the other hand, running local open-source models (such as Llama 3 or Mistral) on dedicated GPU containers offers complete control, privacy compliance, and predictability in IT infrastructure costs.",
-      "To deploy AI locally with high-performance metrics, engineers must implement efficient context vector retrieval (RAG pipelines), prune redundant model layers, and partition databases so intelligence acts as a secure, local neural network.",
-      "Ultimately, the competitive advantage will lie with companies that own their neural data pipelines rather than renting generic brains from massive monopolistic APIs. The future of corporate IT architecture is distributed, localized, and open-source."
-    ]
-  },
-  {
-    slug: "nextjs14-best-practices",
-    title: "Next.js 14 App Router: Production Best Practices",
-    excerpt: "A compilation of core patterns for structuring Next.js 14 codebases, dealing with Server Actions, layout composition, and caching optimizations in high-traffic applications.",
-    publishedAt: "May 24, 2026",
-    readTime: "4 min read",
+    slug: "why-nextjs-app-router",
+    title: "Why we chose Next.js App Router for every project in 2026",
+    excerpt: "A deep dive into why Codex Neural consolidates all web development around Next.js App Router, detailing its static, server, and client-side execution boundaries.",
+    publishedAt: "June 10, 2026",
+    readTime: "8 min read",
     category: "Web Engineering",
     tags: ["Next.js", "React", "Frontend", "Performance"],
     author: mockTeam[0], // Manohar Singh
     body: [
-      "Next.js 14 introduces foundational features for writing performant react applications, notably dynamic Server Actions and streaming layout structures.",
-      "In high-traffic systems, it is recommended to keep page shells static by default. Use loading boundaries for heavy database fetches, and keep your interactive event handlers encapsulated inside client-side components using the 'use client' directive.",
-      "Additionally, leveraging absolute import mapping (@/*) avoids long, confusing relative path directories, keeping imports clean and developer operations streamlined.",
-      "Optimizing initial bundles using lightweight library alternatives, auditing custom fonts, and lazy loading heavy media elements guarantees that your project consistently clocks sub-second FCP speeds worldwide."
+      "Selecting a frontend framework in 2026 requires looking past surface-level conveniences. As enterprise web systems grow more complex, code durability, rendering speed, and indexing security emerge as core metrics. At Codex Neural, we have standardized all custom web platforms on the Next.js App Router. This article explains the technical rationale behind this engineering choice, outlining how server-side rendering, streaming compilation, and bundle constraints work together to deliver robust applications.",
+      "[!] In high-traffic systems, selecting the wrong rendering paradigm can lead to excessive server costs or poor user interaction scores. Next.js App Router resolves this by combining Server Components and Client Components natively.",
+      "The foundation of the App Router lies in Server Components (RSC) by default. In traditional Client-Side Rendered (CSR) applications, the client's browser downloads a large JavaScript bundle, parses the syntax, and makes subsequent API calls to fetch data. This flow delays the First Contentful Paint (FCP) and leaves users staring at empty loading indicators. By shifting rendering logic to the server, Next.js generates static HTML pages that compile instantly. The client downloads minimal JavaScript, resolving initial load bottlenecks and optimizing Core Web Vitals.",
+      "Additionally, Server Components have direct database access, allowing engineers to run database queries or server-side fetch requests without exposing sensitive API endpoints or authentication tokens to the client. This decoupling acts as a natural security boundary.",
+      "```tsx\n// Example of a clean Next.js Server Component fetching data\nimport React from 'react';\nimport { getCaseStudies } from '@/sanity/lib/client';\n\nexport const revalidate = 60; // Revalidate static content every 60s\n\nexport default async function PortfolioPage() {\n  const cases = await getCaseStudies();\n  return (\n    <main className=\"py-12\">\n      <h1 className=\"text-2xl font-bold\">Case Studies</h1>\n      <div className=\"grid gap-6\">\n        {cases.map((c) => (\n          <div key={c.slug} className=\"border p-4 rounded-xl\">\n            <h2>{c.title}</h2>\n          </div>\n        ))}\n      </div>\n    </main>\n  );\n}\n```",
+      "Another crucial feature is Streaming and Suspense. Under old monolithic frameworks, a page could not be served until the server fetched all required data. If a database query in a secondary section lagged, the entire page load failed or timed out. In Next.js, we wrap heavy, asynchronous components in React Suspense boundaries. The server immediately streams the static layout shell, showing a skeleton loader, and pipes dynamic components over the network once data resolves.",
+      "```tsx\n// Using Suspense to stream heavy components\nimport { Suspense } from 'react';\nimport PortfolioClient from './PortfolioClient';\n\nexport default function Page() {\n  return (\n    <div>\n      <h1>Our Projects</h1>\n      <Suspense fallback={<div>Loading data...</div>}>\n        <PortfolioClient />\n      </Suspense>\n    </div>\n  );\n}\n```",
+      "Incremental Static Regeneration (ISR) is another game-changer. For high-volume sites like our blog or portfolio, rendering pages dynamically on every click wastes server cycles and slows response times. With ISR, pages compile at build time and are stored at edge nodes. When a revalidation threshold (such as 600 seconds) is reached, Next.js regenerates the page in the background upon a user request. The server serves the cached page instantly, updates the cache asynchronously, and avoids database hits during traffic spikes.",
+      "> \"Next.js App Router provides a seamless boundary between server security and client interactivity, allowing us to build scalable platforms that load in under a second worldwide.\"",
+      "For interactive features, we use Client Components by inserting the 'use client' directive. By encapsulating stateful actions, form validations, and animations within leaf components, we keep the main layout shell static and lightweight. This keeps the initial JS bundle small and keeps the site responsive.",
+      "Ultimately, Next.js App Router provides a robust, decoupled framework for building modern web properties. It eliminates package bloating, enforces clean boundary discipline, and delivers exceptional user experiences, making it the perfect choice for Codex Neural."
     ]
   },
   {
-    slug: "web3-security-standards",
-    title: "Web3 Security: Hardening Smart Contracts",
-    excerpt: "An in-depth review of smart contract vulnerabilities, gas-saving assembly patterns, and strict Foundry testing guidelines for secure blockchain deployments.",
-    publishedAt: "April 15, 2026",
-    readTime: "6 min read",
-    category: "Blockchain & Web3",
-    tags: ["Solidity", "Smart Contracts", "Foundry", "Security"],
-    author: mockTeam[1], // Anuj Pokhrel
+    slug: "building-ai-ready-infrastructure",
+    title: "Building AI-ready infrastructure: what most startups get wrong",
+    excerpt: "Exploring the common pitfalls startups face when designing AI integration nodes, and how to build secure, low-latency, and cost-effective intelligence pipelines.",
+    publishedAt: "June 8, 2026",
+    readTime: "9 min read",
+    category: "Applied Intelligence",
+    tags: ["AI/ML", "Enterprise", "Infrastructure", "Open Source"],
+    author: mockTeam[2], // Aman Yadav
     body: [
-      "Deploying Solidity code onto public ledgers demands rigorous engineering scrutiny. Unlike traditional backends, smart contract bugs can lead to direct, irreversible financial loss.",
-      "Engineers should run comprehensive unit tests using Foundry, verify contract states using invariant testing, and optimize gas fees by avoiding redundant storage writes and utilizing optimized assembly blocks when safe.",
-      "Always ensure that ownership transfer utilities and contract access levels are thoroughly locked down before mainnet deployment.",
-      "By adhering to standard security checklists like the Checks-Effects-Interactions pattern and using reputable libraries like OpenZeppelin, development teams can launch new staking and swap nodes with complete confidence."
+      "In 2026, artificial intelligence integration has shifted from a novel feature to a core backend requirement. Startups are racing to connect Large Language Models (LLMs) to their proprietary data pools, hoping to automate user flows and support queues. However, many teams make critical architectural mistakes, leading to high API costs, severe data leaks, and sluggish response times. This article explores how to build secure, low-latency, and cost-effective AI infrastructure that scales.",
+      "[!] The most common error in AI engineering is assuming that proprietary cloud APIs are a scalable solution for processing sensitive data payloads.",
+      "The first pitfall is API cost and latency. Relying on cloud APIs (such as OpenAI or Anthropic) for every transaction is expensive and introduces network bottlenecks. A single model call can take anywhere from 2 to 10 seconds, which is unacceptable for real-time web applications. To solve this, startups should adopt a multi-tier model configuration. Simple classification tasks, PII scrubbing, and syntax validations should run on small, local open-source models (like Llama 3 8B or Mistral 7B) hosted on private GPU containers, leaving complex reasoning tasks for larger API nodes.",
+      "The second pitfall is data sovereignty and compliance. Sending raw customer transcripts or internal medical files to external APIs violates regulations like GDPR and HIPAA. To protect user privacy, startups must establish an ingestion gateway. This gateway scrubs personally identifiable information (PII) before data leaves the private network.",
+      "```python\n# Example of a fastapi PII scrubbing gateway middleware\nfrom fastapi import FastAPI, Request\nimport re\n\napp = FastAPI()\n\nEMAIL_REGEX = re.compile(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}')\n\ndef scrub_pii(text: str) -> str:\n    # Replace sensitive email addresses with hashes\n    return EMAIL_REGEX.sub('[REDACTED_EMAIL]', text)\n\n@app.post(\"/v1/analyze\")\nasync def analyze_input(request: Request):\n    body = await request.json()\n    raw_prompt = body.get(\"prompt\", \"\")\n    clean_prompt = scrub_pii(raw_prompt)\n    # Now safely send clean_prompt to the processing pipeline\n    return {\"status\": \"safe\", \"processed_prompt\": clean_prompt}\n```",
+      "The third pitfall is poor vector index design. Many teams struggle with Retrieval-Augmented Generation (RAG) pipelines. They chunk documents using arbitrary character limits, resulting in incomplete context, and insert them into vector databases without proper metadata tags. This causes models to hallucinate. To build a robust RAG system, engineers must implement semantic chunking (splitting documents by natural topics or sections) and use hybrid search, combining vector embeddings with traditional keyword matching (like BM25).",
+      "```python\n# Example of connecting to pgvector in PostgreSQL\nimport psycopg2\n\nconn = psycopg2.connect(\"dbname=ai_nodes user=postgres\")\ncur = conn.cursor()\n\ndef query_semantic_records(vector_embedding):\n    # Query pgvector table for similar medical record context\n    cur.execute(\"\"\"\n        SELECT id, document_text, distance \n        FROM medical_records \n        ORDER BY embedding <=> %s::vector \n        LIMIT 3;\n    \"\"\", (vector_embedding,))\n    return cur.fetchall()\n```",
+      "Finally, startups must optimize model serving. Deploying open-source LLMs on raw cloud instances without a serving wrapper leads to poor throughput. Utilizing inference frameworks like vLLM or TensorRT-LLM enables continuous batching and page-attention caching, which increases token-per-second metrics by up to 400% on the same hardware.",
+      "> \"By shifting simple intelligence workloads to fine-tuned local models and securing data streams with PII gates, startups can reduce their cloud expenditures by 70% while securing their data integrity.\"",
+      "Ultimately, building an AI-ready infrastructure requires deliberate architectural choices: multi-tier model serving, secure PII gateways, semantic RAG indices, and optimized serving frameworks. By avoiding common integration pitfalls, startups can deploy intelligence pipelines that are fast, compliant, and cost-effective."
     ]
   }
 ];
+
 
 const mockJobOpenings: MockJobOpening[] = [
   {

@@ -27,7 +27,7 @@ export default function ServiceDetailClient({ service }: ServiceDetailClientProp
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 flex-grow w-full relative z-10">
+    <div id="main-content" className="max-w-7xl mx-auto px-6 md:px-12 py-16 flex-grow w-full relative z-10">
       <Link
         href="/services"
         className="text-primary font-mono text-xs font-semibold tracking-wider hover:underline mb-8 inline-block"

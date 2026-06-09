@@ -206,10 +206,49 @@ export default function Home() {
   ];
 
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col justify-between relative overflow-hidden font-sans">
+    <main id="main-content" className="min-h-screen bg-background text-foreground flex flex-col justify-between relative overflow-hidden font-sans">
       
       {/* Neural Network interactive canvas backdrop */}
       <NeuralBackground />
+
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Codex Neural",
+            "url": "https://codexneural.com",
+            "logo": "https://codexneural.com/tech/typescript.svg",
+            "sameAs": [
+              "https://www.linkedin.com/company/codexneural",
+              "https://github.com/Manoharaya"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "email": "contact@codexneural.com",
+              "contactType": "customer service"
+            }
+          })
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Codex Neural",
+            "url": "https://codexneural.com",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://codexneural.com/blog?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          })
+        }}
+      />
 
       {/* Decorative Blur Blobs */}
       <div className="absolute top-0 right-0 w-[550px] h-[550px] bg-tint/15 rounded-full blur-[100px] -z-20 animate-pulse-glow" />

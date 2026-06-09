@@ -1,7 +1,20 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Our Services & Capabilities | Codex Neural",
+  description: "Explore our 6 core capabilities: AI/ML, Web/Mobile App Dev, Backend Systems, UI/UX, Web3 Blockchain, and Digital Growth.",
+  alternates: {
+    canonical: "https://codexneural.com/services",
+  },
+  openGraph: {
+    title: "Our Services & Capabilities | Codex Neural",
+    description: "Explore our 6 core capabilities: AI/ML, Web/Mobile App Dev, Backend Systems, UI/UX, Web3 Blockchain, and Digital Growth.",
+    url: "https://codexneural.com/services",
+    type: "website",
+  },
+};
 
 interface Service {
   slug: string;
@@ -51,7 +64,31 @@ const services: Service[] = [
 
 export default function Services() {
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col justify-between font-sans relative z-10">
+    <main id="main-content" className="min-h-screen bg-background text-foreground flex flex-col justify-between font-sans relative z-10">
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://codexneural.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Services",
+                "item": "https://codexneural.com/services"
+              }
+            ]
+          })
+        }}
+      />
       
       {/* Content */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-24 flex-grow w-full">

@@ -1,23 +1,58 @@
-import React from "react";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Privacy Policy | Codex Neural",
-  description: "Disclosures regarding data collection, minimization, Minimal session cookies, and third-party analytical audits (GA4, Hotjar).",
+  description: "Disclosures regarding data collection, minimization, cookies, and third-party analytical audits (GA4, Hotjar) under GDPR regulations.",
+  alternates: {
+    canonical: "https://codexneural.com/privacy",
+  },
+  openGraph: {
+    title: "Privacy Policy | Codex Neural",
+    description: "Disclosures regarding data collection, minimization, cookies, and third-party analytical audits (GA4, Hotjar) under GDPR regulations.",
+    url: "https://codexneural.com/privacy",
+    type: "website",
+  },
 };
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col justify-between font-sans relative z-10">
-      
-      {/* Content */}
-      <div className="max-w-4xl mx-auto px-6 md:px-12 py-24 flex-grow w-full">
-        <p className="text-primary font-mono text-xs font-bold tracking-widest uppercase mb-3">Compliance & Disclosures</p>
-        <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight text-foreground mb-8">
-          Privacy Policy
-        </h1>
+    <>
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://codexneural.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Privacy Policy",
+                "item": "https://codexneural.com/privacy"
+              }
+            ]
+          })
+        }}
+      />
+
+      <main id="main-content" className="min-h-screen bg-background text-foreground flex flex-col justify-between font-sans relative z-10">
         
-        <div className="prose prose-slate max-w-none text-muted leading-relaxed space-y-6 text-sm md:text-base font-sans">
-          <p className="font-mono text-xs"><em>Last updated: June 10, 2026</em></p>
+        {/* Content */}
+        <div className="max-w-4xl mx-auto px-6 md:px-12 py-24 flex-grow w-full">
+          <p className="text-primary font-mono text-xs font-bold tracking-widest uppercase mb-3">Compliance & Disclosures</p>
+          <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight text-foreground mb-8">
+            Privacy Policy
+          </h1>
+          
+          <div className="prose prose-slate max-w-none text-muted leading-relaxed space-y-6 text-sm md:text-base font-sans">
+            <p className="font-mono text-xs"><em>Last updated: June 10, 2026</em></p>
           
           <h2 className="text-xl font-bold font-heading text-foreground mt-8">1. Information Collection</h2>
           <p>
@@ -48,11 +83,12 @@ export default function PrivacyPage() {
             You retain complete rights to view, correct, or request total erasure of your scoping form inputs or email details from our network servers.
           </p>
           <p>
-            For any queries or data request actions, contact our compliance node directly at: <strong>connect@codexneural.com</strong>.
+            For any queries or data request actions, contact our compliance node directly at: <strong>contact@codexneural.com</strong>.
           </p>
         </div>
       </div>
 
     </main>
+    </>
   );
 }

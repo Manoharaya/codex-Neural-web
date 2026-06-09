@@ -101,7 +101,7 @@ export default async function CaseDetailPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(projectSchema) }}
       />
 
-      <main className="min-h-screen bg-background text-foreground flex flex-col justify-between relative overflow-hidden font-sans z-10">
+      <main id="main-content" className="min-h-screen bg-background text-foreground flex flex-col justify-between relative overflow-hidden font-sans z-10">
         
         {/* Decorative background grid and glowing blob */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-tint/20 rounded-full blur-[100px] -z-10 animate-pulse-glow" />
@@ -153,14 +153,14 @@ export default async function CaseDetailPage({ params }: PageProps) {
                 <span className="w-1.5 h-6 bg-primary rounded-full"></span>
                 The Challenge
               </h2>
-              <p className="text-muted leading-relaxed text-sm md:text-base font-sans">{project.challenge}</p>
+              <p className="text-muted leading-relaxed text-sm md:text-base font-sans whitespace-pre-line">{project.challenge}</p>
             </div>
             <div className="p-8 bg-tint/10 border border-primary/20 rounded-xl">
               <h2 className="text-xl md:text-2xl font-heading font-bold text-foreground mb-4 flex items-center gap-2">
                 <span className="w-1.5 h-6 bg-accent rounded-full"></span>
                 Our Solution
               </h2>
-              <p className="text-muted leading-relaxed text-sm md:text-base font-sans">{project.solution}</p>
+              <p className="text-muted leading-relaxed text-sm md:text-base font-sans whitespace-pre-line">{project.solution}</p>
             </div>
           </section>
 
@@ -168,7 +168,7 @@ export default async function CaseDetailPage({ params }: PageProps) {
           {project.outcomes && (
             <section className="p-8 bg-surface border border-gray-200 rounded-xl max-w-5xl mb-16 font-sans">
               <h2 className="text-xl font-heading font-bold text-foreground mb-4">Outcomes & Impact</h2>
-              <p className="text-muted leading-relaxed text-sm md:text-base font-sans">{project.outcomes}</p>
+              <p className="text-muted leading-relaxed text-sm md:text-base font-sans whitespace-pre-line">{project.outcomes}</p>
             </section>
           )}
 

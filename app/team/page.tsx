@@ -1,18 +1,53 @@
 import React from "react";
 import { getTeamMembers } from "@/sanity/lib/client";
 
+import { Metadata } from "next";
+
 export const revalidate = 60; // ISR revalidation (60s)
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Our Team | Codex Neural",
   description: "Meet the distributed systems architects, frontend developers, and data analysis specialists engineering future-ready software in Kathmandu.",
+  alternates: {
+    canonical: "https://codexneural.com/team",
+  },
+  openGraph: {
+    title: "Our Team | Codex Neural",
+    description: "Meet the distributed systems architects, frontend developers, and data analysis specialists engineering future-ready software in Kathmandu.",
+    url: "https://codexneural.com/team",
+    type: "website",
+  },
 };
 
 export default async function TeamPage() {
   const team = await getTeamMembers();
 
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col justify-between relative overflow-hidden font-sans z-10">
+    <main id="main-content" className="min-h-screen bg-background text-foreground flex flex-col justify-between relative overflow-hidden font-sans z-10">
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://codexneural.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Team",
+                "item": "https://codexneural.com/team"
+              }
+            ]
+          })
+        }}
+      />
       
       {/* Decorative blobs */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-tint/20 rounded-full blur-[100px] -z-10 animate-pulse-glow" />
