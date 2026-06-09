@@ -53,7 +53,7 @@ export default function Home() {
           {/* Main Headline */}
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 text-foreground leading-[1.1]">
             We Build Software <br />
-            That Lasts.
+            That Lasts<span className="text-primary">.</span>
           </h1>
 
           {/* Subtitle */}
