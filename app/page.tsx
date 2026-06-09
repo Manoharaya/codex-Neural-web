@@ -1,67 +1,126 @@
+"use client";
+
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#030712] text-gray-100 flex flex-col justify-between relative overflow-hidden font-sans selection:bg-[#00FF88]/20 selection:text-[#00FF88]">
-      {/* Decorative Grid & Glow Elements */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(0,255,136,0.1),rgba(255,255,255,0))]" />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:40px_40px]" />
-      
+    <main className="min-h-screen bg-background text-foreground flex flex-col justify-between relative overflow-hidden font-sans">
+      {/* Decorative subtle background accents */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-tint/30 rounded-full blur-3xl -z-10" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/5 rounded-full blur-2xl -z-10" />
+
       {/* Header */}
-      <header className="relative z-10 w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#00FF88] to-emerald-500 flex items-center justify-center shadow-lg shadow-[#00FF88]/20">
-            <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M22 20 Q24 18 26 20 M12 2v20M17 5v14M7 9v6" />
-            </svg>
+      <header className="w-full max-w-7xl mx-auto px-6 md:px-12 py-6 flex items-center justify-between z-10">
+        <div className="flex items-center gap-8">
+          {/* Logo / Branding */}
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-xl font-black tracking-tighter text-foreground uppercase">
+              CODEX<span className="text-primary font-light">NEURAL</span>
+            </span>
           </div>
-          <div className="flex flex-col leading-none">
-            <span className="text-white font-extrabold tracking-wider text-lg">CODEX</span>
-            <span className="text-[#00FF88] font-bold text-xs tracking-widest">NEURAL</span>
-          </div>
+
+          {/* Navigation Links */}
+          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted">
+            <a href="#services" className="hover:text-foreground transition-colors duration-300">
+              Services
+            </a>
+            <a href="#work" className="hover:text-foreground transition-colors duration-300">
+              Work
+            </a>
+            <a href="#about" className="hover:text-foreground transition-colors duration-300">
+              About
+            </a>
+          </nav>
         </div>
-        <nav className="hidden md:flex items-center gap-8 text-sm font-mono tracking-widest text-gray-400">
-          <a href="#about" className="hover:text-white transition-colors duration-300">ABOUT</a>
-          <a href="#services" className="hover:text-white transition-colors duration-300">SERVICES</a>
-          <a href="#careers" className="hover:text-white transition-colors duration-300">CAREERS</a>
-        </nav>
+
+        {/* CTA Button */}
+        <div>
+          <a
+            href="#contact"
+            className="px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-[#0d645e] transition-all duration-300 shadow-sm"
+          >
+            Start a project
+          </a>
+        </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative z-10 max-w-5xl mx-auto px-6 py-20 md:py-32 flex flex-col items-center text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00FF88]/5 border border-[#00FF88]/20 text-[#00FF88] text-xs font-mono tracking-widest mb-8 animate-pulse">
-          <span className="w-2 h-2 rounded-full bg-[#00FF88]" />
-          SYSTEM_ONLINE // DEPLOYMENT_SUCCESSFUL
-        </div>
-        
-        <h1 className="text-4xl md:text-7xl font-extrabold tracking-tight mb-8 leading-tight bg-clip-text text-transparent bg-gradient-to-b from-white via-gray-100 to-gray-500">
-          Architecting the <br className="hidden md:inline" />
-          <span className="bg-gradient-to-r from-[#00FF88] via-[#05FFD2] to-emerald-400 bg-clip-text text-transparent">
-            Invisible Systems
-          </span>
-        </h1>
+      <section className="max-w-7xl mx-auto px-6 md:px-12 pt-20 pb-12 flex-grow flex flex-col justify-center z-10">
+        <div className="max-w-3xl">
+          {/* Tagline */}
+          <p className="text-primary font-semibold text-sm tracking-wide uppercase mb-4">
+            Nepal&apos;s AI &amp; Engineering Studio
+          </p>
 
-        <p className="text-base md:text-xl text-gray-400 max-w-2xl leading-relaxed mb-12 font-mono">
-          We build durable, high-integrity digital infrastructure and AI solutions engineered for long-term growth and resilience.
-        </p>
+          {/* Main Headline */}
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 text-foreground leading-[1.1]">
+            We Build Software <br />
+            That Lasts.
+          </h1>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="px-8 py-4 bg-[#00FF88] text-black font-semibold rounded-xl hover:bg-[#00FF88]/90 transition-all duration-300 shadow-lg shadow-[#00FF88]/20 hover:scale-[1.02]">
-            Explore Services &rarr;
-          </button>
-          <button className="px-8 py-4 bg-gray-900 border border-gray-800 text-white font-semibold rounded-xl hover:bg-gray-800 transition-all duration-300 hover:scale-[1.02]">
-            Contact Experts
-          </button>
+          {/* Subtitle */}
+          <p className="text-lg md:text-xl text-muted leading-relaxed mb-10 max-w-2xl">
+            From AI systems to enterprise infrastructure — we engineer durable, high-performance digital products for global clients.
+          </p>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-16">
+            <a
+              href="#contact"
+              className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-[#0d645e] transition-all duration-300 shadow-lg shadow-primary/10 hover:translate-y-[-1px]"
+            >
+              Start a Project
+              <span className="text-lg font-light">&rarr;</span>
+            </a>
+            <a
+              href="#work"
+              className="inline-flex items-center justify-center px-7 py-4 border-2 border-primary text-primary font-semibold rounded-lg hover:bg-tint/40 transition-all duration-300 hover:translate-y-[-1px]"
+            >
+              View Our Work
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="relative z-10 w-full max-w-7xl mx-auto px-6 py-8 border-t border-gray-900 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-gray-500">
-        <p>&copy; {new Date().getFullYear()} CODEX NEURAL. ALL RIGHTS RESERVED.</p>
-        <p className="flex items-center gap-2">
-          <span>BUILT WITH RESILIENCE</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />
-          <span>ESTABLISHED IN NEPAL</span>
-        </p>
-      </footer>
+      {/* Stats Footer */}
+      <section className="w-full border-t border-gray-200 bg-surface z-10 relative">
+        {/* Floating Down Arrow Icon */}
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <button 
+            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+            className="w-12 h-12 bg-foreground text-background rounded-full flex items-center justify-center shadow-lg hover:bg-primary transition-all duration-300 focus:outline-none"
+            aria-label="Scroll down"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-10 grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-200 text-center">
+          {/* Stat 1 */}
+          <div className="flex flex-col justify-center px-4 py-4 md:py-0">
+            <span className="text-4xl md:text-5xl font-extrabold text-primary mb-2">20+</span>
+            <span className="text-sm font-medium text-muted uppercase tracking-wider">Projects</span>
+          </div>
+
+          {/* Stat 2 */}
+          <div className="flex flex-col justify-center px-4 py-4 md:py-0">
+            <span className="text-4xl md:text-5xl font-extrabold text-primary mb-2">8</span>
+            <span className="text-sm font-medium text-muted uppercase tracking-wider">Engineers</span>
+          </div>
+
+          {/* Stat 3 */}
+          <div className="flex flex-col justify-center px-4 py-4 md:py-0">
+            <span className="text-4xl md:text-5xl font-extrabold text-primary mb-2">3+</span>
+            <span className="text-sm font-medium text-muted uppercase tracking-wider">Years</span>
+          </div>
+
+          {/* Stat 4 */}
+          <div className="flex flex-col justify-center px-4 py-4 md:py-0">
+            <span className="text-4xl md:text-5xl font-extrabold text-primary mb-2">Global</span>
+            <span className="text-sm font-medium text-muted uppercase tracking-wider">Clients</span>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
