@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Syne, IBM_Plex_Mono, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
+import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -43,7 +45,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${syne.variable} ${ibmPlexMono.variable} ${jetbrainsMono.variable} antialiased`}
       >
+        <NavBar />
         {children}
+        <Footer />
         <CookieConsent />
       </body>
     </html>

@@ -158,24 +158,6 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
 
   return (
     <main className="min-h-screen bg-background text-foreground flex flex-col justify-between font-sans">
-      {/* Header */}
-      <header className="w-full max-w-7xl mx-auto px-6 md:px-12 py-6 flex items-center justify-between">
-        <div className="flex items-center gap-8">
-          <Link href="/" className="font-mono text-xl font-black tracking-tighter text-foreground uppercase">
-            CODEX<span className="text-primary font-light">NEURAL</span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted">
-            <Link href="/services" className="text-foreground font-semibold">Services</Link>
-            <Link href="/portfolio" className="hover:text-foreground transition-colors duration-300">Work</Link>
-            <Link href="/about" className="hover:text-foreground transition-colors duration-300">About</Link>
-          </nav>
-        </div>
-        <div>
-          <Link href="/contact" className="px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-[#0d645e] transition-all duration-300">
-            Start a project
-          </Link>
-        </div>
-      </header>
 
       {/* Hero */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 flex-grow w-full">
@@ -260,11 +242,6 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
         </section>
       </div>
 
-      {/* Footer */}
-      <footer className="w-full max-w-7xl mx-auto px-6 md:px-12 py-8 border-t border-gray-200 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-muted">
-        <p>&copy; {new Date().getFullYear()} CODEX NEURAL. ALL RIGHTS RESERVED.</p>
-        <p>ESTABLISHED IN NEPAL // GLOBAL OPERATIONS</p>
-      </footer>
     </main>
   );
 }
