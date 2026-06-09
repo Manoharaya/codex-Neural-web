@@ -50,7 +50,8 @@ function AnalyticsTracker() {
   }
 
   const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-XXXXXXXXXX";
-  const hotjarId = process.env.NEXT_PUBLIC_HOTJAR_ID || "XXXXXXX";
+  const hotjarId = process.env.NEXT_PUBLIC_HOTJAR_ID || "";
+  const hasValidHotjar = /^\d+$/.test(hotjarId);
 
   return (
     <>
@@ -58,18 +59,20 @@ function AnalyticsTracker() {
       <GoogleAnalytics gaId={gaId} />
 
       {/* Hotjar Tracking Script */}
-      <Script id="hotjar-analytics" strategy="afterInteractive">
-        {`
-          (function(h,o,t,j,a,r){
-              h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-              h._hjSettings={hjid:${hotjarId},hjsv:6};
-              a=o.getElementsByTagName('head')[0];
-              r=o.createElement('script');r.async=1;
-              r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-              a.appendChild(r);
-          })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-        `}
-      </Script>
+      {hasValidHotjar && (
+        <Script id="hotjar-analytics" strategy="afterInteractive">
+          {`
+            (function(h,o,t,j,a,r){
+                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                h._hjSettings={hjid:${hotjarId},hjsv:6};
+                a=o.getElementsByTagName('head')[0];
+                r=o.createElement('script');r.async=1;
+                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+          `}
+        </Script>
+      )}
     </>
   );
 }
